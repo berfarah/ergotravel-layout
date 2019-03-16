@@ -10,10 +10,6 @@ enum keyboard_layers {
   _FKEYS,      // Function keys
 };
 
-enum custom_keycodes {
-  KC_AFK = SAFE_RANGE,
-};
-
 #define KC_ KC_TRNS
 #define KC__ KC_TRNS
 #define _______ KC_TRNS
@@ -28,23 +24,23 @@ enum custom_keycodes {
 #define KC_VSCN LT(_MOVE, KC_SCLN)
 // Tap: /, Hold: Toggle to Window movement layer
 #define KC_WSLH LT(_WINDOW, KC_SLSH)
-// Command+`
-#define KC_LGRV LGUI(KC_GRV)
-#define KC_LGSP LGUI_T(KC_SPC)
+// ALt tab
+#define KC_ALTT LALT(KC_TAB)
 
 #define KC_LLFT LGUI(KC_LEFT)
 #define KC_LRHT LGUI(KC_RIGHT)
-#define KC_VIMW LALT(KC_RIGHT)
-#define KC_VIMB LALT(KC_LEFT)
+#define KC_VIMW LCTL(KC_RIGHT)
+#define KC_VIMB LCTL(KC_LEFT)
 
 #define KC_HYSP ALL_T(KC_F19)
+#define KC_AFK LGUI(KC_L)
 
-#define KC_WINL LGUI(LALT(KC_LEFT))
-#define KC_WINU LGUI(LALT(KC_UP))
-#define KC_WIND LGUI(LALT(KC_DOWN))
-#define KC_WINR LGUI(LALT(KC_RIGHT))
+#define KC_WINL LGUI(KC_LEFT)
+#define KC_WINU LGUI(KC_UP)
+#define KC_WIND LGUI(KC_DOWN)
+#define KC_WINR LGUI(KC_RIGHT)
 #define KC_CTAB LCTL(KC_TAB)
-#define KC_LGUW LGUI(KC_W)
+#define KC_LGUW LCTL(KC_W)
 
 #define KC_RST RESET
 #define KC_DBUG DEBUG
@@ -59,12 +55,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|----+----+----+----+----+----+----|     |----+----+----+----+----+----+----|
   // LSFT| Z  | X  | C  | V  | B  |MUTE|     |PLAY|  N |  M |  , |  . | /  |RSFT|
   //|----+----+----+----+----+----+----.     .----+----+----+----+----+----+----|
-  // HYSP|ALT |FNKY|NUMS|LGUI| SPC|               \BSPC| ENT|NUMS|FNKY|ALT |MEH |
+  // WIN |ALGR|FNKY|NUMS|CTRL| SPC|               \BSPC| ENT|NUMS|FNKY|ALT |HYSP|
   //`----+----+----+--+-+----/----/               \----\----+----+----+----+----'
 
   // LAYER 1: NUMBERS / SYMBOLS
   //,----+----+----+----+----+----+----.     ,----+----+----+----+----+----+----.
-  // ⌘-` | `  |    |    |    |    |    |     | B+ |    |    |    | -  | =  |    |
+  //ALT+T| `  |    |    |    |    |    |     | B+ |    |    |    | -  | =  |    |
   //|----+----+----+----+----+----+----|     |----+----+----+----+----+----+----|
   //     | 1  | 2  | 3  | 4  | 5  |    |     | B- |  6 |  7 |  8 |  9 |  0 |    |
   //|----+----+----+----+----+----+----|     |----+----+----+----+----+----+----|
@@ -103,13 +99,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|----+----+----+----+----+----+----|     |----+----+----+----+----+----+----|
      LSFT, Z  , X  , C  , V  , B  ,MUTE,      MPLY, N  , M  ,COMM,DOT ,WSLH,RSFT,
   //|----+----+----+----+----+----+----.     .----+----+----+----+----+----+----|
-     HYSP,LALT,FNKY,NUMS,LGSP, SPC,                BSPC, ENT,NUMS,FNKY,LALT,MEH
+     HYSP,ALGR,FNKY,NUMS,LCTL, SPC,                BSPC, ENT,NUMS,FNKY,LALT,MEH
   //`----+----+----+--+-+----/----/               \----\----+----+----+----+----'
   ),
 
   [_NUMS] = LAYOUT_kc(
     //,----+----+----+----+----+----+----.     ,----+----+----+----+----+----+----.
-      LGRV, GRV , _  , _  , _  , _  , _  ,      BRIU,  _  , _  , _ ,MINS, EQL,  _ ,
+      ALTT, GRV , _  , _  , _  , _  , _  ,      BRIU,  _  , _  , _ ,MINS, EQL,  _ ,
     //|----+----+----+----+----+----+----|     |----+----+----+----+----+----+----|
          _ , 1  , 2  , 3  , 4  , 5  , _  ,      BRID,  6  , 7 ,  8 ,  9 ,  0 ,  _ ,
     //|----+----+----+----+----+----+----|     |----+----+----+----+----+----+----|
@@ -154,17 +150,4 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
          _ ,  _ ,  _ ,  _ ,  _ ,  _ ,                  _ ,  _ ,  _ ,  _ ,  _ ,  _
     //`----+----+----+--+-+----/----/               \----\----+----+----+----+----'
   )
-};
-
-// Custom keycodes
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  switch(keycode) {
-    case KC_AFK:
-      if (record->event.pressed) {
-        SEND_STRING(SS_DOWN(X_LCTRL)SS_DOWN(X_LSHIFT)SS_TAP(X_POWER)SS_UP(X_LSHIFT)SS_UP(X_LCTRL));
-      }
-      return false; break;
-  }
-
-  return true;
 };
